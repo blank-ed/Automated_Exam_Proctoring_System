@@ -9,7 +9,7 @@ During an exam, there should be only one student present at one desk at any give
 
 ## Speaking Detection System
 It is commonly agreed that during an exam, students should not be talking. If they are talking, then this could potentially mean they are passing on answers from the test questions. Therefore, I have used MediaPipe Face Mesh to extract out 8 important mouth coordinates. With these mouth coordinates, I have calculated the Mouth Aspect Ratio formula, which is:
-MAR = \frac{d(C, D) + d(E, F) + d(G, H)}{d(A, B)}
+$$MAR = \frac{d(C, D) + d(E, F) + d(G, H)}{d(A, B)}$$
 
 where,
 
