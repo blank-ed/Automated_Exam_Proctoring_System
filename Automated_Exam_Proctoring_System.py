@@ -13,6 +13,14 @@ import cv2
 import csv
 import numpy as np
 
+## Load Database
+students = []
+with open("Necessary Files/Database.txt", "r") as f:
+    file_contents = f.read().split('=')[1]
+    for each_student in eval(file_contents):
+        students.append(each_student)
+
+
 class MyWindow(QMainWindow):
     def __init__(self):
         super(MyWindow, self).__init__()
@@ -71,7 +79,7 @@ class MyWindow(QMainWindow):
 
         # Login Button
         self.button = QtWidgets.QPushButton("LOGIN", self)
-        # self.button.clicked.connect(self.clicked)
+        self.button.clicked.connect(self.clicked)
         self.button.setStyleSheet("color: white;" "background-color: #1070a2;" "border :1px solid #1070a2;" "border-top-left-radius :4px;" "border-top-right-radius : 4px;" "border-bottom-left-radius : 4px;" "border-bottom-right-radius : 4px;" "letter-spacing : 5px")
         self.button.setFont(QFont('Bold', 10, weight=QFont.Bold))
         self.button.resize(140, 40)
@@ -92,34 +100,41 @@ class MyWindow(QMainWindow):
     def Error_Label_Timer(self):
         self.errorlabel.setVisible(False)
 
-    # def clicked(self):
-    #     connectiondb = mysql.connector.connect(host="localhost", user="root", passwd="", database="users")
-    #     username = self.userfield.text()
-    #     password = self.passfield.text()
-    #     if username == '' or password == '':
-    #         self.blanklabel = QtWidgets.QLabel(self)
-    #         self.blanklabel.resize(280, 40)
-    #         self.blanklabel.setText("Please Fill Up Username and Password")
-    #         self.blanklabel.setAlignment(Qt.AlignCenter)
-    #         self.blanklabel.move(10, 380)
-    #         self.blanklabel.setStyleSheet("color: white;"
-    #                                       "background-color: red;"
-    #                                       "border :1px solid red;"
-    #                                       "border-top-left-radius :4px;"
-    #                                       "border-top-right-radius : 4px;"
-    #                                       "border-bottom-left-radius : 4px;"
-    #                                       "border-bottom-right-radius : 4px;")
-    #         self.blanklabel.setVisible(True)
-    #         blanklabeltimer = QTimer(self)
-    #         blanklabeltimer.timeout.connect(self.Blank_Label_Timer)
-    #         blanklabeltimer.start(5000)
-    #         return
-    #
-    #
-    #     cursordb = connectiondb.cursor()
-    #     loadname = f"select Name from user where username='{username}' and password='{password}'"
-    #     cursordb.execute(loadname)
-    #     data = cursordb.fetchone()
+    def clicked(self):
+        username = self.userfield.text()
+        password = self.passfield.text()
+        if username == '' or password == '':
+            self.blanklabel = QtWidgets.QLabel(self)
+            self.blanklabel.resize(280, 40)
+            self.blanklabel.setText("Please Fill Up Username and Password")
+            self.blanklabel.setAlignment(Qt.AlignCenter)
+            self.blanklabel.move(10, 380)
+            self.blanklabel.setStyleSheet("color: white;" "background-color: red;" "border :1px solid red;" "border-top-left-radius :4px;" "border-top-right-radius : 4px;" "border-bottom-left-radius : 4px;" "border-bottom-right-radius : 4px;")
+            self.blanklabel.setVisible(True)
+            blanklabeltimer = QTimer(self)
+            blanklabeltimer.timeout.connect(self.Blank_Label_Timer)
+            blanklabeltimer.start(5000)
+
+        else:
+            for each_student in students:
+                if each_student["username"] == username and each_student["password"] == password:
+                    print('yes')
+                else:
+                    self.blanklabel = QtWidgets.QLabel(self)
+                    self.blanklabel.resize(280, 40)
+                    self.blanklabel.setText("Please Fill Up Correct Username and Password")
+                    self.blanklabel.setAlignment(Qt.AlignCenter)
+                    self.blanklabel.move(10, 380)
+                    self.blanklabel.setStyleSheet("color: white;" "background-color: red;" "border :1px solid red;" "border-top-left-radius :4px;" "border-top-right-radius : 4px;" "border-bottom-left-radius : 4px;" "border-bottom-right-radius : 4px;")
+                    self.blanklabel.setVisible(True)
+                    blanklabeltimer = QTimer(self)
+                    blanklabeltimer.timeout.connect(self.Blank_Label_Timer)
+                    blanklabeltimer.start(5000)
+
+        # cursordb = connectiondb.cursor()
+        # loadname = f"select Name from user where username='{username}' and password='{password}'"
+        # cursordb.execute(loadname)
+        # data = cursordb.fetchone()
     #     if data is not None:
     #
     #         # these are my python files
