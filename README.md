@@ -21,5 +21,5 @@ represents the Euclidean distance between point $p$ and $q$. The points are repr
 </p>
 
 I set the Mouth Aspect Ratio threshold value to 0.5, which means that if the calculated MAR is greater than 0.5, the student is talking. There are different papers that use different mouth points and I have listed down a few of them for your reference:
-- Sri Mounika, T.V.N.S.R., Phanindra, P.H., Sai Charan, N.V.V.N., Kranthi Kumar Reddy, Y. and Govindu, S., 2022. Driver Drowsiness Detection Using Eye Aspect Ratio (EAR), Mouth Aspect Ratio (MAR), and Driver Distraction Using Head Pose Estimation. In ICT Systems and Sustainability: Proceedings of ICT4SD 2021, Volume 1 (pp. 619-627). Springer Singapore ([link](https://link.springer.com/chapter/10.1007/978-981-16-5987-4_63).
-
+- Sri Mounika, T.V.N.S.R., Phanindra, P.H., Sai Charan, N.V.V.N., Kranthi Kumar Reddy, Y. and Govindu, S., 2022. Driver Drowsiness Detection Using Eye Aspect Ratio (EAR), Mouth Aspect Ratio (MAR), and Driver Distraction Using Head Pose Estimation. In ICT Systems and Sustainability: Proceedings of ICT4SD 2021, Volume 1 (pp. 619-627). Springer Singapore. ([link](https://link.springer.com/chapter/10.1007/978-981-16-5987-4_63))
+- Singh, A., Chandewar, C. and Pattarkine, P., 2018. Driver drowsiness alert system with effective feature extraction. Int. J. Res. Emerg. Sci. Technol, 5, pp.14-19. ([link](https://ijrest.net/downloads/volume-5/issue-4/pid-ijrest-54201808.pdf))
