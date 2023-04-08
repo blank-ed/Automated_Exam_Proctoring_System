@@ -55,6 +55,6 @@ After you clone the repo, follow the step by step guide to install TensorFlow Ob
 - Then in your command line, type: `cd models/research` and enter `protoc object_detection/protos/*.proto --python_out=.`
 - Copy this by using the command: `cp object_detection/packages/tf2/setup.py .` and enter `python -m pip install .` (NOTE: depending on the IDEs, it can be cp or copy)
 
-If you wish to create your own model and replace this one, you are more than welcome to do so. You can find a full video course down below for your reference. He explains everything in this video properly, from start to finish, on how to train a custom object detection model:
+If you wish to create your own model and replace this one, you are more than welcome to do so. You can find a full video course down below for your reference. He explains everything in this video properly, from start to finish, on how to train a custom object detection model. I have also listed down additional links for your reference:
 - [TensorFlow Object Detection Step-by-Step Guide](https://www.youtube.com/watch?v=yqkISICHH-U&t=0s)
 - [Easier way to install CUDA and CuDNN](https://www.youtube.com/watch?v=hHWkvEcDBO0&t=0s)
