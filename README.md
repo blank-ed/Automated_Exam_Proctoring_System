@@ -1,4 +1,4 @@
-# Automated_Exam_Proctoring_System
+# Automated Exam Proctoring System
 This is the code for my Final Year Project, where I created an Automated Exam Proctoring System. This system is made to maintain exam integrity for online exams taken from home during COVID-19, by utilizing students laptop camera. This system have 5 individual systems, where each of them detect different parts of cheating.
 
 ## Identity Verification System
