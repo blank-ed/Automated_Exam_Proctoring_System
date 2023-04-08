@@ -50,4 +50,4 @@ During an exam, electronics devices should not be used by students. Therefore, I
 - `pipeline.config`: This is a configuration file that contains all the settings and hyperparameters used to train the model, as well as the model architecture and training data specifications. It is used by the Object Detection API to build the model graph and run the training or inference process.
 
 If you wish to create your own model and replace this one, you are more than welcome to do so. You can find a full video course down below for your reference. He explains everything in this video properly, from start to finish, on how to train a custom object detection model:
-- https://www.youtube.com/watch?v=yqkISICHH-U&t=6686s
+- https://www.youtube.com/watch?v=yqkISICHH-U&t=0s
