@@ -39,3 +39,5 @@ The points are represented in the image down below:
 <p align="center">
   <img src="https://github.com/blank-ed/Automated_Exam_Proctoring_System/blob/master/Necessary%20Files/Head%20Position%20Ratio.png" width="200" height="auto">
 </p>
+
+I set the Head Position Ratio threshold value to 0.33, which means that if the calculated HPR is less than this, the student is looking around (left or right).
