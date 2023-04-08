@@ -1,8 +1,13 @@
 # Automated Exam Proctoring System
 This is the code for my Final Year Project, where I created an Automated Exam Proctoring System. This system is made to maintain exam integrity for online exams taken from home during COVID-19, by utilizing students laptop camera. This system have 5 individual systems, where each of them detect different parts of cheating.
+For best **__user experience__**, clone this repo in your **__PyCharm Python IDE__** as all of the steps and directions are based on this. 
 
 ## Identity Verification System
 In a physical examination hall with in-person proctors, the first thing they do before you enter the exam is to verify your identity with your student ID card. In my system, a login system is implemented where the student must enter their student ID and password. If the entered credentials match and are present in the database, the student's name will be fetched from the database. Subsequently, the student's laptop camera will take a picture of the student and analyze it through the facial recognition system. If the name in the database and the one obtained through facial recognition match, the student will be allowed to enter the exam.
+
+This system takes in an image, runs it through the pre-trained model which is in the `Identity Verification System/Face Detector and Recognition Models` and outputs a name. If you don't specify the input image, then it will utilize your camera to take a picture of you. If you want to specify the input and use the pre-trained model, you can select the images from `Identity Verification System/Test Images` and choose any one of the person in there along with their respective image.
+
+If you want to train your own facial recognition model, then in the `Identity Verification System/Dataset` folder, create a folder with the users *__first name__* and add their respective images in those folder. Then, run the `Identity Verification System/Train_Facial_Recognition_System.py` file. 
 
 ## Multi-Face Detection System
 During an exam, there should be only one student present at one desk at any given moment. If there is more than one student present at the desk, it can potentially mean that the student is cheating. I have used MediaPipe Face Detection library to detect the number of faces from the input video of the student's laptop camera. You can visit this link to learn more about it ([MediaPipe Face Detection](https://github.com/google/mediapipe/blob/master/docs/solutions/face_detection.md)).
