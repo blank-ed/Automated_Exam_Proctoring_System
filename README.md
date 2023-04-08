@@ -3,7 +3,6 @@ This is the code for my Final Year Project, where I created an Automated Exam Pr
 For the best **_user experience_**, clone this repo in your **_PyCharm Python IDE_** as all of the steps and directions are based on this. 
 
 ## Basic Setup Guidelines
-```
 - Clone the [repo](https://github.com/blank-ed/Automated_Exam_Proctoring_System.git)
 - Install the required libraries `pip install -r requirements.txt` from the repo.
 - Install CUDA and CuDNN ([link](https://www.youtube.com/watch?v=hHWkvEcDBO0&t=0s)) (Ignore this step if you have CUDA and CuDNN)
@@ -13,7 +12,6 @@ For the best **_user experience_**, clone this repo in your **_PyCharm Python ID
   - Then in your command line, type: `cd models/research` and enter `protoc object_detection/protos/*.proto --python_out=.`
   - Copy this by using the command: `copy object_detection\packages\tf2\setup.py .` and enter `python -m pip install .` to install
   - Copy the `builders.py` file from `Automated Exam Proctoring System/Necessary Files` and paste it inside your virtual environment folder at `venv/Lib/site-packages/google/protobuf/internal`. This step is required because the protobuf version installed during the TensorFlow Object Detection API installation does not contain this file.
-```
 
 ## Identity Verification System
 In a physical examination hall with in-person proctors, the first thing they do before you enter the exam is to verify your identity with your student ID card. In my system, a login system is implemented where the student must enter their student ID and password. If the entered credentials match and are present in the database, the student's name will be fetched from the database. Subsequently, the student's laptop camera will take a picture of the student and analyze it through the facial recognition system. If the name in the database and the one obtained through facial recognition match, the student will be allowed to enter the exam.
