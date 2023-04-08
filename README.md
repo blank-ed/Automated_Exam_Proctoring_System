@@ -37,5 +37,5 @@ $$Center = (\frac{x_A + x_B + x_C + x_D}{4}, \frac{y_A + y_B + y_C + y_D}{4})$$
 
 The points are represented in the image down below:
 <p align="center">
-  <img src="https://github.com/blank-ed/Automated_Exam_Proctoring_System/blob/master/Necessary%20Files/Mouth%20Aspect%20Ratio.png" width="200" height="auto">
+  <img src="https://github.com/blank-ed/Automated_Exam_Proctoring_System/blob/master/Necessary%20Files/Head%20Position%20Ratio.png" width="200" height="auto">
 </p>
