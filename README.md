@@ -22,6 +22,7 @@ In a physical examination hall with in-person proctors, the first thing they do 
 This system takes in an image, runs it through the pre-trained model which is in the `Identity Verification System/Face Detector and Recognition Models` and outputs a name. If you don't specify the input image, then it will utilize your camera to take a picture of you. If you want to specify the input and use the pre-trained model, you can select the images from `Identity Verification System/Test Images` and choose any one of the person in there along with their respective image.
 
 If you want to train your own facial recognition model, then in the `Identity Verification System/Dataset` folder, create a folder with the users *__first name__* and add their respective images in those folder. Then, run the `Identity Verification System/Train_Facial_Recognition_System.py` file. 
+Then go into the `Necessary Files/database.txt` and update the user list accordingly (delete the unnecessary user).
 
 ## Multi-Face Detection System
 During an exam, there should be only one student present at one desk at any given moment. If there is more than one student present at the desk, it can potentially mean that the student is cheating. I have used MediaPipe Face Detection library to detect the number of faces from the input video of the student's laptop camera. You can visit this link to learn more about it ([MediaPipe Face Detection](https://github.com/google/mediapipe/blob/master/docs/solutions/face_detection.md)).
