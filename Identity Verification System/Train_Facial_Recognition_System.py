@@ -5,13 +5,13 @@ import cv2
 import os
 from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import SVC
-import argparse
 import pickle
 
 ##### Extract Features #####
 
 print("Loading face detector...")
-detector = cv2.dnn.readNetFromCaffe(r'Face Detector and Recognition Models/deploy.prototxt', r'Face Detector and Recognition Models/res10_300x300_ssd_iter_140000.caffemodel')
+detector = cv2.dnn.readNetFromCaffe(r'Face Detector and Recognition Models/deploy.prototxt',
+                                    r'Face Detector and Recognition Models/res10_300x300_ssd_iter_140000.caffemodel')
 
 # load our serialized face embedding model from disk
 print("Loading face recognizer...")

@@ -1,7 +1,6 @@
 import mediapipe as mp
 from scipy.spatial import distance as dist
 import numpy as np
-import cv2
 
 def head_position_ratio(left_iris_coords, right_iris_coords, top_bottom_coords):
     # calculate center of iris
