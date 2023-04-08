@@ -48,3 +48,6 @@ During an exam, electronics devices should not be used by students. Therefore, I
 - `ckpt-3.index`: This is an index file that points to the locations of the variable values stored in the ckpt-3.data-00000-of-00001 file.
 - `label_map.pbtxt`: This is a text file that contains a mapping between class names and integer IDs. It is used by the Object Detection API to map the output of the model (which is usually in the form of integer class IDs) back to human-readable class names. Right now there is only one class, which is `Phone`.
 - `pipeline.config`: This is a configuration file that contains all the settings and hyperparameters used to train the model, as well as the model architecture and training data specifications. It is used by the Object Detection API to build the model graph and run the training or inference process.
+
+If you wish to create your own model and replace this one, you are more than welcome to do so. You can find a full video course down below for your reference. He explains everything in this video properly, from start to finish, on how to train a custom object detection model:
+- https://www.youtube.com/watch?v=yqkISICHH-U&t=6686s
