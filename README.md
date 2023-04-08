@@ -8,7 +8,7 @@ In a physical examination hall with in-person proctors, the first thing they do 
 During an exam, there should be only one student present at one desk at any given moment. If there is more than one student present at the desk, it can potentially mean that the student is cheating. I have used MediaPipe Face Detection library to detect the number of faces from the input video of the student's laptop camera. You can visit this link to learn more about it ([MediaPipe Face Detection](https://github.com/google/mediapipe/blob/master/docs/solutions/face_detection.md)).
 
 ## Speaking Detection System
-It is universally agreed that during an exam, students should not be talking. If they are talking, then this could potentially mean they are passing on answers from the test questions. Therefore, I have used MediaPipe Face Mesh to extract out 8 important mouth points. With these mouth points and their respective coordinates, I have calculated the Mouth Aspect Ratio by using the formula:
+It is universally agreed that during an exam, students should not be talking. If they are talking, then this could potentially mean they are passing on answers from the test questions. Therefore, I have used [MediaPipe Face Mesh](https://github.com/google/mediapipe/blob/master/docs/solutions/face_mesh.md) to extract out 8 important mouth points. With these mouth points and their respective coordinates, I have calculated the Mouth Aspect Ratio by using the formula:
 $$MAR = \frac{d(C, D) + d(E, F) + d(G, H)}{d(A, B)}$$
 
 where,
@@ -25,7 +25,7 @@ I set the Mouth Aspect Ratio threshold value to 0.5, which means that if the cal
 - Singh, A., Chandewar, C. and Pattarkine, P., 2018. Driver drowsiness alert system with effective feature extraction. Int. J. Res. Emerg. Sci. Technol, 5, pp.14-19. ([link](https://ijrest.net/downloads/volume-5/issue-4/pid-ijrest-54201808.pdf))
 
 ## Head Position Detection System
-Additionally during an exam, students should not be looking around as well. If they are found to be turning their heads, then this could also potentially mean they are checking the answer sheets of their peers. Therefore, I have used MediaPipe Face Mesh to extract out important facial points from the left & right iris and top of the face & bottom of the face. With the 4 facial points each from the left & right iris, the center of the iris is calculated. Furthermore, the distance between the irises is calculated. The distance between the top of the face and the bottom of the face is also calculated. The Head Position Ratio is then calculated using the formula:
+Additionally during an exam, students should not be looking around as well. If they are found to be turning their heads, then this could also potentially mean they are checking the answer sheets of their peers. Therefore, I have used [MediaPipe Face Mesh](https://github.com/google/mediapipe/blob/master/docs/solutions/face_mesh.md) to extract out important facial points from the left & right iris and top of the face & bottom of the face. With the 4 facial points each from the left & right iris, the center of the iris is calculated. Furthermore, the distance between the irises is calculated. The distance between the top of the face and the bottom of the face is also calculated. The Head Position Ratio is then calculated using the formula:
 $$HPR = \frac{d(Left, Right)}{d(Up, Down)}$$
 
 where,
