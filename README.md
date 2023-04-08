@@ -16,4 +16,4 @@ where,
 $$d(p, q) = \sqrt{(q_x - p_x)^2 + (q_y - p_y)^2}$$
 
 represents the Euclidean distance between point $p$ and $q$. The points are represented in the image down below:
-![Mouth Aspect Ratio Landmarks](Necessary Files/Mouth Aspect Ratio.png)
+![Mouth Aspect Ratio Landmarks](/Necessary Files/Mouth Aspect Ratio.png)
