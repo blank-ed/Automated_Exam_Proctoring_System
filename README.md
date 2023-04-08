@@ -41,3 +41,6 @@ The points are represented in the image down below:
 </p>
 
 I set the Head Position Ratio threshold value to 0.33, which means that if the calculated HPR is less than this, the student is looking around (left or right).
+
+## Phone Detection System
+During an exam, electronics devices should not be used by students. Therefore, I have used TensorFlow Object Detection API, using SSD-MobileNet, to train the model to detect my phone. The pre-trained models are located in the `Phone Detection System/Pre-Trained Models` folder.
