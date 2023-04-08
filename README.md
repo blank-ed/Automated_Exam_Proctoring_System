@@ -26,7 +26,7 @@ I set the Mouth Aspect Ratio threshold value to 0.5, which means that if the cal
 
 ## Head Position Detection System
 Additionally during an exam, students should not be looking around as well. If they are found to be turning their heads, then this could also potentially mean they are checking the answer sheets of their peers. Therefore, I have used MediaPipe Face Mesh to extract out important facial points from the left & right iris and top of the face & bottom of the face. With the 4 facial points each from the left & right iris, the center of the iris is calculated. Furthermore, the distance between the irises is calculated. The distance between the top of the face and the bottom of the face is also calculated. The Head Position Ratio is then calculated using the formula:
-$$HPR = \frac{d(A, B)}{d(C, D)}$$
+$$HPR = \frac{d(Left, Right)}{d(Up, Down)}$$
 
 where,
 
