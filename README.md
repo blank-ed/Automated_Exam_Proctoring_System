@@ -1,6 +1,6 @@
 # Automated Exam Proctoring System
 This is the code for my Final Year Project, where I created an Automated Exam Proctoring System. This system is made to maintain exam integrity for online exams taken from home during COVID-19, by utilizing students laptop camera. This system have 5 individual systems, where each of them detect different parts of cheating.
-For the best **_user experience_**, clone this repo in your **_PyCharm Python IDE_** as all of the steps and directions are based on this. **_THE OBJECT DETECTION SYSTEM IS BUILT ON A CONTROLLED BACKGROUND SO IT MIGHT NOT WORK PROPERLY IN YOUR BACKGROUND!!_** 
+For the best **_user experience_**, clone this repo in your **_PyCharm Python IDE_** as all of the steps and directions are based on this. **_THE OBJECT DETECTION SYSTEM IS TRAINED IN A CONTROLLED BACKGROUND SO IT MIGHT NOT WORK PROPERLY IN YOUR BACKGROUND!!_** 
 
 ## Basic Setup Guidelines
 - Clone the [repo](https://github.com/blank-ed/Automated_Exam_Proctoring_System.git)
@@ -26,7 +26,7 @@ For the best **_user experience_**, clone this repo in your **_PyCharm Python ID
 ## Identity Verification System
 In a physical examination hall with in-person proctors, the first thing they do before you enter the exam is to verify your identity with your student ID card. In my system, a login system is implemented where the student must enter their student ID and password. If the entered credentials match and are present in the database, the student's name will be fetched from the database. Subsequently, the student's laptop camera will take a picture of the student and analyze it through the facial recognition system. If the name in the database and the one obtained through facial recognition match, the student will be allowed to enter the exam.
 
-This system takes in an image, runs it through the pre-trained model which is in the `Identity Verification System/Face Detector and Recognition Models` and outputs a name. If you don't specify the input image, then it will utilize your camera to take a picture of you. If you want to specify the input and use the pre-trained model, you can select the images from `Identity Verification System/Test Images` and choose any one of the person in there along with their respective image.
+This system takes in an image, runs it through the pre-trained model which is in the `Identity Verification System/Face Detector and Recognition Models` and outputs a name. If you don't specify the input image, then it will utilize your camera to take a picture of you. If you want to specify the input and use the pre-trained model, you can select the images from `Identity Verification System/Test Images` and choose any one of the person in there along with their respective image. The features are extracted using SSD-ResNet10 and classified/trained using SVM.
 
 If you want to train your own facial recognition model, then in the `Identity Verification System/Dataset` folder, create a folder with the users *__first name__* and add their respective images in those folder. Then, run the `Identity Verification System/Train_Facial_Recognition_System.py` file. 
 Then go into the `Necessary Files/database.txt` and update the user list accordingly (delete the unnecessary user).
