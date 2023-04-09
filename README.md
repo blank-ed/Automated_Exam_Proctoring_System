@@ -1,6 +1,6 @@
 # Automated Exam Proctoring System
 This is the code for my Final Year Project, where I created an Automated Exam Proctoring System. This system is made to maintain exam integrity for online exams taken from home during COVID-19, by utilizing students laptop camera. This system have 5 individual systems, where each of them detect different parts of cheating.
-For the best **_user experience_**, clone this repo in your **_PyCharm Python IDE_** as all of the steps and directions are based on this. 
+For the best **_user experience_**, clone this repo in your **_PyCharm Python IDE_** as all of the steps and directions are based on this. **_ THE OBJECT DETECTION SYSTEM IS BUILT ON A CONTROLLED BACKGROUND SO IT MIGHT NOT WORK PROPERLY IN YOUR BACKGROUND!! _** 
 
 ## Basic Setup Guidelines
 - Clone the [repo](https://github.com/blank-ed/Automated_Exam_Proctoring_System.git)
@@ -14,7 +14,14 @@ For the best **_user experience_**, clone this repo in your **_PyCharm Python ID
   - Copy the `builders.py` file from `Automated Exam Proctoring System/Necessary Files` and paste it inside your virtual environment folder at `venv/Lib/site-packages/google/protobuf/internal`. This step is required because the protobuf version installed during the TensorFlow Object Detection API installation does not contain this file.
 
 ## Basic Usage Guidelines
-- 
+- run the `Automated_Exam_Proctoring_System.py` file.
+- enter username and password based on the images you want to choose:
+  - `username: admin1` and `password: admin1` for user profile `Ben`
+  - `username: admin2` and `password: admin2` for user profile `Jerry`
+  - `username: admin3` and `password: admin3` for user profile `Elton`
+- if you are using the pre-trained facial recognition model, check the `Choose Picture` checkbox
+- click `Login` and choose the respective user profile image from `identity_verification/Test Images` folder
+- if verified, an output window will pop up and you can test out the 4 different cheating detection systems
 
 ## Identity Verification System
 In a physical examination hall with in-person proctors, the first thing they do before you enter the exam is to verify your identity with your student ID card. In my system, a login system is implemented where the student must enter their student ID and password. If the entered credentials match and are present in the database, the student's name will be fetched from the database. Subsequently, the student's laptop camera will take a picture of the student and analyze it through the facial recognition system. If the name in the database and the one obtained through facial recognition match, the student will be allowed to enter the exam.
