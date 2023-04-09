@@ -1,6 +1,6 @@
 # Automated Exam Proctoring System
 This is the code for my Final Year Project, where I created an Automated Exam Proctoring System. This system is made to maintain exam integrity for online exams taken from home during COVID-19, by utilizing students laptop camera. This system have 5 individual systems, where each of them detect different parts of cheating.
-For the best **_user experience_**, clone this repo in your **_PyCharm Python IDE_** as all of the steps and directions are based on this. **_ THE OBJECT DETECTION SYSTEM IS BUILT ON A CONTROLLED BACKGROUND SO IT MIGHT NOT WORK PROPERLY IN YOUR BACKGROUND!! _** 
+For the best **_user experience_**, clone this repo in your **_PyCharm Python IDE_** as all of the steps and directions are based on this. **_THE OBJECT DETECTION SYSTEM IS BUILT ON A CONTROLLED BACKGROUND SO IT MIGHT NOT WORK PROPERLY IN YOUR BACKGROUND!!_** 
 
 ## Basic Setup Guidelines
 - Clone the [repo](https://github.com/blank-ed/Automated_Exam_Proctoring_System.git)
