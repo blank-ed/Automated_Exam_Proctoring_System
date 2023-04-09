@@ -6,35 +6,36 @@ import cv2
 import easygui
 
 # filename is the name of the user that will be automatically filled in when the user logs in from the main system
-def recognition(specify_input=False):
+def recognition(take_picture=False):
     # Specify input takes a picture of the user from the camera instead of manually choosing an input image
-    if specify_input:
+    if take_picture:
         # Access Students Camera
         cap = cv2.VideoCapture(0)
         # Read Frames From Video
         ret, frame = cap.read()
         while True:
             # Take a Picture of Students Faces
-            cv2.imwrite(f'student.jpeg', frame)
+            cv2.imwrite('identity_verification\\student.jpeg', frame)
             cv2.destroyAllWindows()
             break
         cap.release()
 
     # load our serialized face detector from disk
     print("Loading face detector...")
-    detector = cv2.dnn.readNetFromCaffe(r'Face Detector and Recognition Models/deploy.prototxt', r'Face Detector and Recognition Models/res10_300x300_ssd_iter_140000.caffemodel')
+    detector = cv2.dnn.readNetFromCaffe('identity_verification\\Face Detector and Recognition Models\\deploy.prototxt',
+                                        'identity_verification\\Face Detector and Recognition Models\\res10_300x300_ssd_iter_140000.caffemodel')
     # load our serialized face embedding model from disk
     print("Loading face recognizer...")
-    embedder = cv2.dnn.readNetFromTorch(r'Face Detector and Recognition Models/openface_nn4.small2.v1.t7')
+    embedder = cv2.dnn.readNetFromTorch('identity_verification\\Face Detector and Recognition Models\\openface_nn4.small2.v1.t7')
     # load the actual face recognition model along with the label encoder
-    recognizer = pickle.loads(open('Face Detector and Recognition Models/Face_Recognition_Model.pickle', "rb").read())
-    le = pickle.loads(open('Face Detector and Recognition Models/Label_Encoder.pickle', "rb").read())
+    recognizer = pickle.loads(open('identity_verification\\Face Detector and Recognition Models\\Face_Recognition_Model.pickle', "rb").read())
+    le = pickle.loads(open('identity_verification\\Face Detector and Recognition Models\\Label_Encoder.pickle', "rb").read())
 
     # Load the image containing Students Face, resize it to have a width of 600 pixels (while maintaining the aspect ratio), and then grab the image dimensions
-    if specify_input:
-        image = cv2.imread(f'student.jpeg')
+    if take_picture:
+        image = cv2.imread('identity_verification\\student.jpeg')
     else:
-        image = cv2.imread(easygui.fileopenbox())
+        image = cv2.imread(easygui.fileopenbox(default='identity_verification/Test Images'))
     image = imutils.resize(image, width=600)
     (h, w) = image.shape[:2]
     # construct a blob from the image

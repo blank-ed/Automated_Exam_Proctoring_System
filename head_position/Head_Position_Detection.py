@@ -30,18 +30,19 @@ def HeadPositionDetection(frame, hpr_threshold=0.33):
         frame.flags.writeable = True
 
         h, w = frame.shape[:2]
-        landmarks = results.multi_face_landmarks[0]
+        if results.multi_face_landmarks:
+            landmarks = results.multi_face_landmarks[0]
 
-        # get the coordinates of specified indices
-        left_iris_coords = [(int(l.x * w), int(l.y * h)) for i, l in enumerate(landmarks.landmark) if i in left_iris_indices]
-        right_iris_coords = [(int(l.x * w), int(l.y * h)) for i, l in enumerate(landmarks.landmark) if i in right_iris_indices]
-        top_bottom_coords = [(int(l.x * w), int(l.y * h)) for i, l in enumerate(landmarks.landmark) if i in top_bottom_indices]
+            # get the coordinates of specified indices
+            left_iris_coords = [(int(l.x * w), int(l.y * h)) for i, l in enumerate(landmarks.landmark) if i in left_iris_indices]
+            right_iris_coords = [(int(l.x * w), int(l.y * h)) for i, l in enumerate(landmarks.landmark) if i in right_iris_indices]
+            top_bottom_coords = [(int(l.x * w), int(l.y * h)) for i, l in enumerate(landmarks.landmark) if i in top_bottom_indices]
 
-        # calculate the mouth aspect ratio
-        hpr = head_position_ratio(left_iris_coords, right_iris_coords, top_bottom_coords)
+            # calculate the mouth aspect ratio
+            hpr = head_position_ratio(left_iris_coords, right_iris_coords, top_bottom_coords)
 
-        # if hpr is greater than threshold, student is looking around
-        if hpr < hpr_threshold:
-            return 1
-        else:
-            return 0
+            # if hpr is greater than threshold, student is looking around
+            if hpr < hpr_threshold:
+                return 1
+            else:
+                return 0

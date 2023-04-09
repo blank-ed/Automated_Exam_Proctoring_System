@@ -7,12 +7,12 @@ from object_detection.utils import config_util
 import numpy as np
 
 # Load pipeline config and build a detection model
-configs = config_util.get_configs_from_pipeline_file(r'Pre-Trained Models/pipeline.config')
+configs = config_util.get_configs_from_pipeline_file('phone_detection\\Pre-Trained Models\\pipeline.config')
 detection_model = model_builder.build(model_config=configs['model'], is_training=False)
 
 # Restore checkpoint
 ckpt = tf.compat.v2.train.Checkpoint(model=detection_model)
-ckpt.restore(os.path.join(r'Pre-Trained Models/ckpt-3')).expect_partial()
+ckpt.restore(os.path.join('phone_detection\\Pre-Trained Models\\ckpt-3')).expect_partial()
 
 
 @tf.function
@@ -24,7 +24,7 @@ def detect_fn(image):
     return detections
 
 
-category_index = label_map_util.create_category_index_from_labelmap(r'Pre-Trained Models/label_map.pbtxt')
+category_index = label_map_util.create_category_index_from_labelmap('phone_detection\\Pre-Trained Models\\label_map.pbtxt')
 
 
 def PhoneDetection(frame):
@@ -57,7 +57,7 @@ def PhoneDetection(frame):
     score = float(detections['detection_scores'][np.argmax(detections['detection_scores'])])
 
     # if the score is greater than 0.8, that means student is using a phone
-    if score > 0.8:
-        return 1
+    if score > 0.7:
+        return 1, defect_type, score
     else:
-        return 0
+        return 0, defect_type, score

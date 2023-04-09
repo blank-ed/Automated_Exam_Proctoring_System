@@ -1,21 +1,22 @@
-# this is from pip or built in libraries
-import time
-import time as t
-import datetime
-from PyQt5 import QtWidgets, QtGui, QtCore
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import Qt, QThread, pyqtSignal, QTimer, QTime, QDateTime
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout
+# Importing libraries
+from PyQt5 import QtWidgets
+from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtGui import *
 import sys
+from identity_verification.Verify_Identity import recognition
 import cv2
+from head_position import Head_Position_Detection
+from multi_face_detection import Multiple_Faces_Detection
+from phone_detection import Phone_Detection
+from speaking_detection import Speaking_Detection
+import datetime
 import csv
-import numpy as np
 
 ## Load Database
 students = []
-with open("Necessary Files/Database.txt", "r") as f:
+with open("Necessary Files\\Database.txt", "r") as f:
     file_contents = f.read().split('=')[1]
     for each_student in eval(file_contents):
         students.append(each_student)
@@ -77,25 +78,44 @@ class MyWindow(QMainWindow):
         self.passfield.move(10, 260)
         self.passfield.resize(280, 40)
 
+        # Checkbox
+        self.checkbox = QtWidgets.QCheckBox(self)
+        self.checkbox.setChecked(True)
+        self.checkbox.setText("Choose Picture")
+        self.checkbox.move(100, 300)
+        self.checkbox.resize(140, 40)
+
         # Login Button
         self.button = QtWidgets.QPushButton("LOGIN", self)
         self.button.clicked.connect(self.clicked)
         self.button.setStyleSheet("color: white;" "background-color: #1070a2;" "border :1px solid #1070a2;" "border-top-left-radius :4px;" "border-top-right-radius : 4px;" "border-bottom-left-radius : 4px;" "border-bottom-right-radius : 4px;" "letter-spacing : 5px")
         self.button.setFont(QFont('Bold', 10, weight=QFont.Bold))
         self.button.resize(140, 40)
-        self.button.move(80, 320)
+        self.button.move(80, 340)
 
-        # Error Message
+        # Invalid Identity Message
         self.errorlabel = QtWidgets.QLabel(self)
         self.errorlabel.resize(280, 40)
-        self.errorlabel.setText("Invalid Username or Password")
-        self.errorlabel.move(10, 380)
+        self.errorlabel.setText("Invalid Identity! Username and Face Doesn't Match")
+        self.errorlabel.move(10, 390)
         self.errorlabel.setAlignment(Qt.AlignCenter)
         self.errorlabel.setStyleSheet("color: white;" "background-color: red;" "border :1px solid red;" "border-top-left-radius :4px;" "border-top-right-radius : 4px;" "border-bottom-left-radius : 4px;" "border-bottom-right-radius : 4px;")
         self.errorlabel.setVisible(False)
 
     def Blank_Label_Timer(self):
         self.blanklabel.setVisible(False)
+
+    def Error_Label(self, text):
+        self.blanklabel = QtWidgets.QLabel(self)
+        self.blanklabel.resize(280, 40)
+        self.blanklabel.setText(text)
+        self.blanklabel.setAlignment(Qt.AlignCenter)
+        self.blanklabel.move(10, 390)
+        self.blanklabel.setStyleSheet("color: white;" "background-color: red;" "border :1px solid red;" "border-top-left-radius :4px;" "border-top-right-radius : 4px;" "border-bottom-left-radius : 4px;" "border-bottom-right-radius : 4px;")
+        self.blanklabel.setVisible(True)
+        blanklabeltimer = QTimer(self)
+        blanklabeltimer.timeout.connect(self.Blank_Label_Timer)
+        blanklabeltimer.start(5000)
 
     def Error_Label_Timer(self):
         self.errorlabel.setVisible(False)
@@ -104,200 +124,117 @@ class MyWindow(QMainWindow):
         username = self.userfield.text()
         password = self.passfield.text()
         if username == '' or password == '':
-            self.blanklabel = QtWidgets.QLabel(self)
-            self.blanklabel.resize(280, 40)
-            self.blanklabel.setText("Please Fill Up Username and Password")
-            self.blanklabel.setAlignment(Qt.AlignCenter)
-            self.blanklabel.move(10, 380)
-            self.blanklabel.setStyleSheet("color: white;" "background-color: red;" "border :1px solid red;" "border-top-left-radius :4px;" "border-top-right-radius : 4px;" "border-bottom-left-radius : 4px;" "border-bottom-right-radius : 4px;")
-            self.blanklabel.setVisible(True)
-            blanklabeltimer = QTimer(self)
-            blanklabeltimer.timeout.connect(self.Blank_Label_Timer)
-            blanklabeltimer.start(5000)
+            self.Error_Label("Please Fill Up Username and Password")
 
         else:
+            found_student = False
             for each_student in students:
-                if each_student["username"] == username and each_student["password"] == password:
-                    print('yes')
+                if "username" in each_student and "password" in each_student:
+                    if each_student["username"] == username and each_student["password"] == password:
+                        found_student = True
+                        name_from_database = each_student["name"]
+                        break
+
+            if found_student:
+                self.errorlabel.setVisible(False)
+
+                if self.checkbox.isChecked():
+                    name_from_recognition_system = recognition(take_picture=False)
                 else:
-                    self.blanklabel = QtWidgets.QLabel(self)
-                    self.blanklabel.resize(280, 40)
-                    self.blanklabel.setText("Please Fill Up Correct Username and Password")
-                    self.blanklabel.setAlignment(Qt.AlignCenter)
-                    self.blanklabel.move(10, 380)
-                    self.blanklabel.setStyleSheet("color: white;" "background-color: red;" "border :1px solid red;" "border-top-left-radius :4px;" "border-top-right-radius : 4px;" "border-bottom-left-radius : 4px;" "border-bottom-right-radius : 4px;")
-                    self.blanklabel.setVisible(True)
-                    blanklabeltimer = QTimer(self)
-                    blanklabeltimer.timeout.connect(self.Blank_Label_Timer)
-                    blanklabeltimer.start(5000)
+                    name_from_recognition_system = recognition(take_picture=True)
 
-        # cursordb = connectiondb.cursor()
-        # loadname = f"select Name from user where username='{username}' and password='{password}'"
-        # cursordb.execute(loadname)
-        # data = cursordb.fetchone()
-    #     if data is not None:
-    #
-    #         # these are my python files
-    #         # import facerecognition
-    #         # import multiplefaces
-    #         # import objectdetection
-    #         # import speakingdetection
-    #         # import headposition
-    #         # from headpostitionML import HeadpositionMachineLearning
-    #         # end imports
-    #
-    #         name = data[0]
-    #         self.errorlabel.setVisible(False)
-    #         # recognition_result = facerecognition.recognition(name)
-    #         # print(recognition_result)
-    #         if name == 'Ilyas':
-    #             self.close()
-    #             # cap = cv2.VideoCapture(1)
-    #             cap = cv2.VideoCapture(0)
-    #             ## FOR TIME ON OUTPUT WINDOW
-    #             exam_ends_time = datetime.datetime.now()
-    #             extra_time = datetime.timedelta(hours=3)
-    #             exam_ends_time_int = exam_ends_time + extra_time
-    #             exam_ends_time = exam_ends_time_int.strftime("%H:%M:%S")
-    #             ## END TIME FOR OUTPUT WINDOW
-    #
-    #             while True:
-    #                 ret, frame = cap.read()
-    #
-    #                 ## START OUTPUT WINDOW
-    #                 output = cv2.imread('output.png')
-    #                 output = cv2.resize(output, (500,600))
-    #                 now = datetime.datetime.now()
-    #                 current_time = now.strftime("%H:%M:%S")
-    #
-    #                 time_remaining = exam_ends_time_int - now
-    #                 time_remaining = str(time_remaining).split('.', 2)[0]
-    #                 name = 'Ilyas'
-    #                 cv2.putText(output, "Student Name: {}".format(name), (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-    #                 username = "TPXXXXXX"
-    #                 cv2.putText(output, "TP Number: {}".format(username), (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-    #
-    #                 cv2.putText(output, "Current Time: {}".format(current_time), (10, 150), cv2.FONT_HERSHEY_SIMPLEX, 1,
-    #                             (255, 255, 255), 2)
-    #
-    #                 cv2.putText(output, "Exam Ends at: {}".format(exam_ends_time), (10, 200), cv2.FONT_HERSHEY_SIMPLEX,
-    #                             1, (255, 255, 255), 2)
-    #                 cv2.putText(output, "Time Remaining: {}".format(time_remaining), (10, 250), cv2.FONT_HERSHEY_SIMPLEX,
-    #                             1, (255, 255, 255), 2)
-    #                 ## END OUTPUT WINDOW
-    #
-    #                 ## START DETECTION TYPES
-    #
-    #                 n = 250
-    #                 # if multiplefaces.MultipleFacesDetector(frame) == 'many_faces':
-    #                 #     n += 50
-    #                 #     cv2.putText(output, "Anomaly Type: MULTIPLE FACES DETECTED", (10, n), cv2.FONT_HERSHEY_SIMPLEX,
-    #                 #                 0.7, (0, 0, 255), 2)
-    #                 #     with open('detections.csv', mode='a', newline='') as f:
-    #                 #         writer = csv.writer(f, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    #                 #         # write the data
-    #                 #         writer.writerow([name, username, "Multiple Faces Detected", current_time])
-    #                 #
-    #                 # elif multiplefaces.MultipleFacesDetector(frame) == 'no_faces':
-    #                 #     n += 50
-    #                 #     cv2.putText(output, "Anomaly Type: NO STUDENT DETECTED", (10, n), cv2.FONT_HERSHEY_SIMPLEX,
-    #                 #                 0.7, (0, 0, 255), 2)
-    #                 #     with open('detections.csv', mode='a', newline='') as f:
-    #                 #         writer = csv.writer(f, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    #                 #         # write the data
-    #                 #         writer.writerow([name, username, "No Faces Detected", current_time])
-    #                 # #
-    #                 # if speakingdetection.SpeakingDetection(frame) == 'mar':
-    #                 #     n += 50
-    #                 #     cv2.putText(output, "Anomaly Type: SPEAKING", (10, n), cv2.FONT_HERSHEY_SIMPLEX, 0.7,
-    #                 #                 (0, 0, 255), 2)
-    #                 #     with open('detections.csv', mode='a', newline='') as f:
-    #                 #         writer = csv.writer(f, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    #                 #         # write the data
-    #                 #         writer.writerow([name, username, "Student Speaking", current_time])
-    #
-    #                 # if headposition.HeadPosition(frame) == 'look_left':
-    #                 #     n += 50
-    #                 #     cv2.putText(output, 'Anomaly Type: STUDENT LOOKING LEFT', (10, n), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-    #                 # elif headposition.HeadPosition(frame) == 'look_right':
-    #                 #     n += 50
-    #                 #     cv2.putText(output, 'Anomaly Type: STUDENT LOOKING RIGHT', (10, n), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-    #
-    #                 # objectdetection_output, defect, score = objectdetection.ObjectDetection(frame)
-    #                 # if score > 0.8:
-    #                 #     n += 50
-    #                 #     defect_percentage = "{:.2%}".format(score)
-    #                 #     cv2.putText(output, "Anomaly Type: {}, Accuracy: {}".format(defect, defect_percentage), (10, n), cv2.FONT_HERSHEY_SIMPLEX, 0.7,
-    #                 #                 (0, 0, 255), 2)
-    #                 #     with open('detections.csv', mode='a', newline='') as f:
-    #                 #         writer = csv.writer(f, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    #                 #         # write the data
-    #                 #         writer.writerow([name, username, "Phone Usage Detected, Accuracy: {}".format(defect_percentage), current_time])
-    #
-    #                 headpose_class, headpose_prob = HeadpositionMachineLearning(frame)
-    #                 headpose_prob = str(round(headpose_prob[np.argmax(headpose_prob)], 2))
-    #                 if headpose_class == 'Looking Left':
-    #                     n += 50
-    #                     cv2.putText(output, "Anomaly Type: STUDENT LOOKING LEFT", (10, n), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-    #                     n += 50
-    #                     cv2.putText(output, "Accuracy: {}".format(headpose_prob), (10, n), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-    #                     with open('detections.csv', mode='a', newline='') as f:
-    #                         writer = csv.writer(f, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    #                         # write the data
-    #                         writer.writerow([name, username, "Student Looking Left", current_time])
-    #                 elif headpose_class == 'Looking Right':
-    #                     n += 50
-    #                     cv2.putText(output, "Anomaly Type: STUDENT LOOKING RIGHT", (10, n), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-    #                     n += 50
-    #                     cv2.putText(output, "Accuracy: {}".format(headpose_prob), (10, n), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-    #                     with open('detections.csv', mode='a', newline='') as f:
-    #                         writer = csv.writer(f, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    #                         # write the data
-    #                         writer.writerow([name, username, "Student Looking Right", current_time])
-    #                 elif headpose_class == 'Looking Front':
-    #                     n += 50
-    #                     cv2.putText(output, "Anomaly Type: STUDENT LOOKING FRONT", (10, n), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-    #                     n += 50
-    #                     cv2.putText(output, "Accuracy: {}".format(headpose_prob), (10, n), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-    #
-    #                 ## END DETECTION TYPES
-    #
-    #                 # cv2.imshow('Exam Proctoring System', cv2.resize(objectdetection_output, (800, 600)))
-    #
-    #                 cv2.imshow("Exam Proctoring System", cv2.resize(frame, (800,600)))
-    #                 cv2.imshow('Output', output)
-    #
-    #                 if cv2.waitKey(5) & 0xFF == ord('q'):
-    #                     break
-    #
-    #             cap.release()
-    #             self.errorlabel.setVisible(False)
-    #         else:
-    #             self.invalidlabel = QtWidgets.QLabel(self)
-    #             self.invalidlabel.resize(280, 40)
-    #             self.invalidlabel.setText("Anomaly Type: Name and Face Not Matching,      Database Name: {}, "
-    #                                       "Face Recognition Result: {}".format(name, recognition_result))
-    #             self.invalidlabel.setWordWrap(True)
-    #             self.invalidlabel.setAlignment(Qt.AlignCenter)
-    #             self.invalidlabel.move(10, 380)
-    #             self.invalidlabel.setStyleSheet("color: white;"
-    #                                           "background-color: red;"
-    #                                           "border :1px solid red;"
-    #                                           "border-top-left-radius :4px;"
-    #                                           "border-top-right-radius : 4px;"
-    #                                           "border-bottom-left-radius : 4px;"
-    #                                           "border-bottom-right-radius : 4px;")
-    #             self.invalidlabel.setVisible(True)
-    #
-    #     else:
-    #         self.errorlabel.setVisible(True)
-    #         errorlabeltimer = QTimer(self)
-    #         errorlabeltimer.timeout.connect(self.Error_Label_Timer)
-    #         errorlabeltimer.start(5000)
-    #     # # Test Section
-    #     #
-    #     # # End Test Section
+                if name_from_recognition_system == name_from_database:
+                    self.close()
+                    cap = cv2.VideoCapture(0)
 
+                    while True:
+                        ret, frame = cap.read()
+                        ## START OUTPUT WINDOW
+                        output = cv2.imread('output.png')
+                        output = cv2.resize(output, (500, 600))
+                        cv2.putText(output, "Student Name: {}".format(name_from_recognition_system), (10, 50),
+                                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+                        now = datetime.datetime.now()
+                        current_time = now.strftime("%H:%M:%S")
+
+                        n = 250
+                        if Multiple_Faces_Detection.MultipleFacesDetector(frame) == 1:
+                            n += 50
+                            cv2.putText(output, "Anomaly Type: Multiple Students at Desk", (10, n),
+                                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+                            with open('detections.csv', mode='a', newline='') as f:
+                                writer = csv.writer(f, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                                # write the data
+                                writer.writerow([name_from_recognition_system, "Multiple Faces Detected", current_time])
+
+                        elif Multiple_Faces_Detection.MultipleFacesDetector(frame) == 0:
+                            n += 50
+                            cv2.putText(output, "Anomaly Type: No Student at Desk", (10, n), cv2.FONT_HERSHEY_SIMPLEX,
+                                        0.7, (0, 0, 255), 2)
+                            with open('detections.csv', mode='a', newline='') as f:
+                                writer = csv.writer(f, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                                # write the data
+                                writer.writerow([name_from_recognition_system, "No Faces Detected", current_time])
+
+                        if Speaking_Detection.SpeakingDetection(frame) == 1:
+                            n += 50
+                            cv2.putText(output, "Anomaly Type: Student is Speaking", (10, n), cv2.FONT_HERSHEY_SIMPLEX,
+                                        0.7, (0, 0, 255), 2)
+                            with open('detections.csv', mode='a', newline='') as f:
+                                writer = csv.writer(f, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                                # write the data
+                                writer.writerow([name_from_recognition_system, "Student Speaking", current_time])
+
+                        if Head_Position_Detection.HeadPositionDetection(frame) == 1:
+                            n += 50
+                            cv2.putText(output, "Anomaly Type: Student is looking around", (10, n),
+                                        cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+                            with open('detections.csv', mode='a', newline='') as f:
+                                writer = csv.writer(f, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                                # write the data
+                                writer.writerow([name_from_recognition_system, "Student Looking Around", current_time])
+
+                        objectdetection_output, defect, score = Phone_Detection.PhoneDetection(frame)
+                        if objectdetection_output == 1:
+                            n += 50
+                            defect_percentage = "{:.2%}".format(score)
+                            cv2.putText(output, "Anomaly Type: {}, Accuracy: {}".format(defect, defect_percentage),
+                                        (10, n), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+                            with open('detections.csv', mode='a', newline='') as f:
+                                writer = csv.writer(f, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                                # write the data
+                                writer.writerow([name_from_recognition_system,
+                                                 "Phone Usage Detected, Accuracy: {}".format(defect_percentage),
+                                                 current_time])
+
+                        ## END DETECTION TYPES
+                        # cv2.imshow('Exam Proctoring System', cv2.resize(objectdetection_output, (800, 600)))
+                        cv2.imshow("Exam Proctoring System", cv2.resize(frame, (800, 600)))
+                        cv2.imshow('Output', output)
+                        if cv2.waitKey(1) & 0xFF == ord('q'):
+                            break
+
+                    cap.release()
+                    cv2.destroyAllWindows()
+
+                else:
+                    self.invalidlabel = QtWidgets.QLabel(self)
+                    self.invalidlabel.resize(280, 40)
+                    self.invalidlabel.setText("Anomaly Type: Name and Face Not Matching,      Database Name: {}, "
+                                              "Face Recognition Result: {}".format(name_from_database, name_from_recognition_system))
+                    self.invalidlabel.setWordWrap(True)
+                    self.invalidlabel.setAlignment(Qt.AlignCenter)
+                    self.invalidlabel.move(10, 390)
+                    self.invalidlabel.setStyleSheet("color: white;"
+                                                    "background-color: red;"
+                                                    "border :1px solid red;"
+                                                    "border-top-left-radius :4px;"
+                                                    "border-top-right-radius : 4px;"
+                                                    "border-bottom-left-radius : 4px;"
+                                                    "border-bottom-right-radius : 4px;")
+                    self.invalidlabel.setVisible(True)
+            else:
+                self.Error_Label("Please Fill Up Correct Username and Password")
 
 def window():
     app = QApplication(sys.argv)

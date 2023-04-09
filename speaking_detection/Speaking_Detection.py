@@ -29,15 +29,16 @@ def SpeakingDetection(frame, mar_threshold=0.5):
         frame.flags.writeable = True
 
         h, w = frame.shape[:2]
-        landmarks = results.multi_face_landmarks[0]
-        # get the coordinates of only the mouth indices
-        mouth_coords = [(int(l.x * w), int(l.y * h)) for i, l in enumerate(landmarks.landmark) if i in mouth_indices]
+        if results.multi_face_landmarks:
+            landmarks = results.multi_face_landmarks[0]
+            # get the coordinates of only the mouth indices
+            mouth_coords = [(int(l.x * w), int(l.y * h)) for i, l in enumerate(landmarks.landmark) if i in mouth_indices]
 
-        # calculate the mouth aspect ratio
-        mar = mouth_aspect_ratio(mouth_coords)
+            # calculate the mouth aspect ratio
+            mar = mouth_aspect_ratio(mouth_coords)
 
-        # if mar is greater than threshold, student is speaking
-        if mar > mar_threshold:
-            return 1
-        else:
-            return 0
+            # if mar is greater than threshold, student is speaking
+            if mar > mar_threshold:
+                return 1
+            else:
+                return 0
